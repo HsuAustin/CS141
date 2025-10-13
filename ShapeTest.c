@@ -26,3 +26,8 @@ struct Shape {
     VTableType VPointer;
     const char* name;
 };
+
+static Shape* Shape_shape(Shape* _this, const char* nm) {
+    _this -> name = nm;
+    return _this;
+}
