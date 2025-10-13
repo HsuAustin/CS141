@@ -209,7 +209,13 @@ static Triangle* Triangle_Triangle(Triangle* _this, const char* _name, int base,
 
 // Picture functions
 
-static double total_area(Shape** shapes, int count) {
+static void drawAll(Shape** shapes, int count) {
+    for (int i = 0; i < count; i++) {
+        shapes[i] -> VPointer[DRAW_INDEX].void_method(shapes[i]);
+    }
+}
+
+static double totalArea(Shape** shapes, int count) {
     double sum_area = 0.0;
     for (int i = 0; i < count; i++) {
         sum_area += shapes[i] -> VPointer[AREA_INDEX].double_method(shapes[i]);
