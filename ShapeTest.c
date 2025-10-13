@@ -22,6 +22,8 @@ typedef VirtualTableEntry* VTableType;
 
 #define PI 3.14159
 
+// Shape
+
 struct Shape {
     VTableType VPointer;
     const char* name;
@@ -43,6 +45,8 @@ static Shape* Shape_Shape(Shape* _this, const char* _name) {
     return _this;
 }
 
+// Circle
+
 struct Circle {
     VTableType VPointer;
     const char* name;
@@ -50,6 +54,7 @@ struct Circle {
 }
 
 static const char* Circle_area(Circle* _this) {return PI * _this -> radius * _this -> radius;}
+
 static void Circle_draw(Circle* _this) {
     cout << "       ***   " << '\n';
     cout << "   *         *" << '\n';
@@ -60,6 +65,7 @@ static void Circle_draw(Circle* _this) {
     cout << "   *         *" << '\n';
     cout << "       ***   " << '\n';
 }
+
 static const char* Circle_dims(Circle* _this) {
     static string s;
     s = to_string(_this -> radius);
@@ -79,6 +85,8 @@ static Circle* Circle_Circle(Circle* _this, const char* _name, int r) {
     return _this;
 }
 
+// Square
+
 struct Square {
     VTableType VPointer;
     const char* name;
@@ -86,6 +94,7 @@ struct Square {
 };
 
 static double Square_area(Square* _this) {return _this -> side * _this -> side;}
+
 static void Square_draw(Square* _this) {
     cout << "*****************" << '\n';
     cout << "*               *" << '\n';
@@ -96,6 +105,7 @@ static void Square_draw(Square* _this) {
     cout << "*               *" << '\n';
     cout << "*****************" << '\n';
 }
+
 static const char* Square_dims(Square* _this) {
     static string s;
     s = to_string(_this -> side);
@@ -115,6 +125,8 @@ static Square* Square_Square(Square* _this, const char* _name, int side) {
     return _this;
 }
 
+// Rectangle
+
 struct Rectangle {
     VTableType VPointer;
     const char* name;
@@ -123,6 +135,7 @@ struct Rectangle {
 };
 
 static double Rectangle_area(Rectangle* _this) {return _this -> width * _this -> height;}
+
 static void Rectangle_draw(Rectangle* _this) {
     cout << "*****************" << '\n';
     cout << "*               *" << '\n';
@@ -131,6 +144,7 @@ static void Rectangle_draw(Rectangle* _this) {
     cout << "*               *" << '\n';
     cout << "*****************" << '\n';
 }
+
 static const char* Rectangle_dims(Rectangle* _this) {
     static string s;
     s = to_string(_this -> width) + ", " + to_string(_this -> height);
@@ -151,6 +165,8 @@ static Rectangle* Rectangle_Rectangle(Rectangle* _this, const char* _name, int w
     return _this;
 }
 
+// Triangle
+
 struct Triangle {
     VTableType VPointer;
     const char* name;
@@ -159,6 +175,7 @@ struct Triangle {
 };
 
 static double Triangle_area(Triangle* _this) {return 0.5 * _this -> base * _this -> height;}
+
 static void Triangle_draw(Triangle* _this) {
     cout << "        *   " << '\n';
     cout << "      *   *  " << '\n';
@@ -169,6 +186,7 @@ static void Triangle_draw(Triangle* _this) {
     cout << " *             * " << '\n';
     cout << "*****************" << '\n';
 }
+
 static const char* Triangle_dims(Triangle* _this) {
     static string s;
     s = to_string(_this -> base) + ", " + to_string(_this -> height);
