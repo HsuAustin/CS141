@@ -22,8 +22,6 @@ typedef VirtualTableEntry* VTableType;
 
 #define PI 3.14159
 
-// Shape
-
 struct Shape {
     VTableType VPointer;
     const char* name;
@@ -44,8 +42,6 @@ static Shape* Shape_Shape(Shape* _this, const char* _name) {
     _this -> name = _name;
     return _this;
 }
-
-// Circle
 
 struct Circle {
     VTableType VPointer;
@@ -84,8 +80,6 @@ static Circle* Circle_Circle(Circle* _this, const char* _name, int r) {
     _this -> radius = r;
     return _this;
 }
-
-// Triangle
 
 struct Triangle {
     VTableType VPointer;
@@ -127,8 +121,6 @@ static Triangle* Triangle_Triangle(Triangle* _this, const char* _name, int base,
     return _this;
 }
 
-// Square
-
 struct Square {
     VTableType VPointer;
     const char* name;
@@ -167,16 +159,14 @@ static Square* Square_Square(Square* _this, const char* _name, int side) {
     return _this;
 }
 
-// Rectangle
-
 struct Rectangle {
     VTableType VPointer;
     const char* name;
+    int side;
     int width;
-    int height;
 };
 
-static double Rectangle_area(Rectangle* _this) {return _this -> width * _this -> height;}
+static double Rectangle_area(Rectangle* _this) {return _this -> side * _this -> width;}
 
 static void Rectangle_draw(Rectangle* _this) {
     cout << "**********************" << '\n';
@@ -189,7 +179,7 @@ static void Rectangle_draw(Rectangle* _this) {
 
 static const char* Rectangle_dims(Rectangle* _this) {
     static string s;
-    s = to_string(_this -> width) + ", " + to_string(_this -> height);
+    s = to_string(_this -> side) + ", " + to_string(_this -> width);
     return s.c_str();
 }
 
@@ -199,15 +189,12 @@ static VirtualTableEntry Rectangle_VTable[] = {
     {.cstring_method = (cstring_method_type) Rectangle_dims}
 };
 
-static Rectangle* Rectangle_Rectangle(Rectangle* _this, const char* _name, int width, int height) {
-    Shape_Shape((Shape*)_this, _name);
+static Rectangle* Rectangle_Rectangle(Rectangle* _this, const char* _name, int side, int width) {
+    Square_Square((Square*)_this, _name, side);
     _this -> VPointer = Rectangle_VTable;
     _this -> width = width;
-    _this -> height = height;
     return _this;
 }
-
-// 3 Picture functions
 
 static void drawAll(Shape** shapes, int count) {
     for (int i = 0; i < count; i++) {
@@ -231,41 +218,24 @@ static double totalArea(Shape** shapes, int count) {
     return sum_area;
 }
 
-// Main
-
 int main(int argc, char* argv[]) {
     int arg1 = stoi(argv[1]);
     int arg2 = stoi(argv[2]);
     int arg3 = arg1 - 1;
     int arg4 = arg2 - 1;
 
-    const int total = 8;
-    Shape** shapes = (Shape**)malloc(total * sizeof(Shape*));
-    int k = 0;
+    Shape* shapes[] = {
+        (Shape*)Triangle_Triangle((Triangle*)malloc(sizeof(Triangle)), "FirstTriangle", arg1, arg2),
+        (Shape*)Triangle_Triangle((Triangle*)malloc(sizeof(Triangle)), "SecondTriangle", arg3, arg4),
+        (Shape*)Circle_Circle((Circle*)malloc(sizeof(Circle)), "FirstCircle", arg1),
+        (Shape*)Circle_Circle((Circle*)malloc(sizeof(Circle)), "SecondCircle", arg3),
+        (Shape*)Square_Square((Square*)malloc(sizeof(Square)), "FirstSquare", arg1),
+        (Shape*)Square_Square((Square*)malloc(sizeof(Square)), "SecondSquare", arg3),
+        (Shape*)Rectangle_Rectangle((Rectangle*)malloc(sizeof(Rectangle)), "FirstRectangle", arg1, arg2),
+        (Shape*)Rectangle_Rectangle((Rectangle*)malloc(sizeof(Rectangle)), "SecondRectangle", arg3, arg4),
+    };
 
-    Triangle* t1 = (Triangle*)malloc(sizeof(Triangle));
-    shapes[k++] = (Shape*)Triangle_Triangle(t1, "FirstTriangle", arg1, arg2);
-
-    Triangle* t2 = (Triangle*)malloc(sizeof(Triangle));
-    shapes[k++] = (Shape*)Triangle_Triangle(t2, "SecondTriangle", arg3, arg4);
-
-    Circle* c1 = (Circle*)malloc(sizeof(Circle));
-    shapes[k++] = (Shape*)Circle_Circle(c1, "FirstCircle", arg1);
-
-    Circle* c2 = (Circle*)malloc(sizeof(Circle));
-    shapes[k++] = (Shape*)Circle_Circle(c2, "SecondCircle", arg3);
-
-    Square* s1 = (Square*)malloc(sizeof(Square));
-    shapes[k++] = (Shape*)Square_Square(s1, "FirstSquare", arg1);
-
-    Square* s2 = (Square*)malloc(sizeof(Square));
-    shapes[k++] = (Shape*)Square_Square(s2, "SecondSquare", arg3);
-
-    Rectangle* r1 = (Rectangle*)malloc(sizeof(Rectangle));
-    shapes[k++] = (Shape*)Rectangle_Rectangle(r1, "FirstRectangle", arg1, arg2);
-
-    Rectangle* r2 = (Rectangle*)malloc(sizeof(Rectangle));
-    shapes[k++] = (Shape*)Rectangle_Rectangle(r2, "SecondRectangle", arg3, arg4);
+    const size_t total = sizeof(shapes) / sizeof(shapes[0]);
 
     drawAll(shapes, total);
     printAll(shapes, total);
