@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <cstdlib>
 
 using namespace std;
 
@@ -207,11 +208,19 @@ static Triangle* Triangle_Triangle(Triangle* _this, const char* _name, int base,
     return _this;
 }
 
-// Picture functions
+// 3 Picture functions
 
 static void drawAll(Shape** shapes, int count) {
     for (int i = 0; i < count; i++) {
         shapes[i] -> VPointer[DRAW_INDEX].void_method(shapes[i]);
+    }
+}
+
+static void printAll(Shape** shapes, int count) {
+    for (int i = 0; i < count; ++i) {
+        const char* dims = shapes[i] -> VPointer[DIMS_INDEX].cstring_method(shapes[i]);
+        double area = shapes[i] -> VPointer[AREA_INDEX].double_method(shapes[i]);
+        cout << shapes[i] -> name << "(" << dims << "): " << area << "\n";
     }
 }
 
@@ -223,10 +232,46 @@ static double totalArea(Shape** shapes, int count) {
     return sum_area;
 }
 
-static void printAll(Shape** shapes, int count) {
-    for (int i = 0; i < count; ++i) {
-        const char* dims = shapes[i] -> VPointer[DIMS_INDEX].cstring_method(shapes[i]);
-        double area = shapes[i] -> VPointer[AREA_INDEX].double_method(shapes[i]);
-        cout << shapes[i] -> name << "(" << dims << "): " << area << "\n";
-    }
+// Main
+
+int main(int argc, char* argv[]) {
+    int arg1 = stoi(argv[1]);
+    int arg2 = stoi(argv[2]);
+    int arg3 = arg1 - 1;
+    int arg4 = arg2 - 1;
+
+    const int total = 8;
+    Shape** shapes = (Shape**)malloc(total * sizeof(Shape*));
+    int k = 0;
+
+    Rectangle* r2 = (Rectangle*)malloc(sizeof(Rectangle));
+    shapes[k++] = (Shape*)Rectangle_Rectangle(r2, "SecondRectangle", arg3, arg4);
+
+    Rectangle* r1 = (Rectangle*)malloc(sizeof(Rectangle));
+    shapes[k++] = (Shape*)Rectangle_Rectangle(r1, "FirstRectangle", arg1, arg2);
+
+    Square* s2 = (Square*)malloc(sizeof(Square));
+    shapes[k++] = (Shape*)Square_Square(s2, "SecondSquare", arg3);
+
+    Square* s1 = (Square*)malloc(sizeof(Square));
+    shapes[k++] = (Shape*)Square_Square(s1, "FirstSquare", arg1);
+
+    Circle* c2 = (Circle*)malloc(sizeof(Circle));
+    shapes[k++] = (Shape*)Circle_Circle(c2, "SecondCircle", arg3);
+
+    Circle* c1 = (Circle*)malloc(sizeof(Circle));
+    shapes[k++] = (Shape*)Circle_Circle(c1, "FirstCircle", arg1);
+
+    Triangle* t2 = (Triangle*)malloc(sizeof(Triangle));
+    shapes[k++] = (Shape*)Triangle_Triangle(t2, "SecondTriangle", arg3, arg4);
+
+    Triangle* t1 = (Triangle*)malloc(sizeof(Triangle));
+    shapes[k++] = (Shape*)Triangle_Triangle(t1, "FirstTriangle", arg1, arg2);
+
+    printAll(shapes, total);
+    drawAll(shapes, total);
+    cout << "Total: " << totalArea(shapes, total) << '\n';
+
+    free(shapes);
+    return 0;
 }
