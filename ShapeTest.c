@@ -150,3 +150,41 @@ static Rectangle* Rectangle_Rectangle(Rectangle* _this, const char* _name, int w
     _this -> height = height;
     return _this;
 }
+
+struct Triangle {
+    VTableType VPointer;
+    const char* name;
+    int base;
+    int height;
+};
+
+static double Triangle_area(Triangle* _this) {return 0.5 * _this -> base * _this -> height;}
+static void Triangle_draw(Triangle* _this) {
+    cout << "        *   " << '\n';
+    cout << "      *   *  " << '\n';
+    cout << "     *     * " << '\n';
+    cout << "    *       * " << '\n';
+    cout << "   *         * " << '\n';
+    cout << "  *           * " << '\n';
+    cout << " *             * " << '\n';
+    cout << "*****************" << '\n';
+}
+static const char* Triangle_dims(Triangle* _this) {
+    static string s;
+    s = to_string(_this -> base) + ", " + to_string(_this -> height);
+    return s.c_str();
+}
+
+static VirtualTableEntry Triangle_VTable[] = {
+    {.double_method = (double_method_type) Triangle_area},
+    {.void_method = (void_method_type) Triangle_draw},
+    {.cstring_method = (cstring_method_type) Triangle_dims},
+};
+
+static Triangle* Triangle_Triangle(Triangle* _this, const char* _name, int base, int height) {
+    Shape_Shape((Shape*)_this, _name);
+    _this -> VPointer = Triangle_VTable;
+    _this -> base = base;
+    _this -> height = height;
+    return _this;
+}
