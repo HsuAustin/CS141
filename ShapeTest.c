@@ -219,7 +219,7 @@ static void printAll(Shape** shapes, int count) {
     for (int i = 0; i < count; ++i) {
         const char* dims = shapes[i] -> VPointer[DIMS_INDEX].cstring_method(shapes[i]);
         double area = shapes[i] -> VPointer[AREA_INDEX].double_method(shapes[i]);
-        cout << shapes[i] -> name << "(" << dims << "): " << area << "\n";
+        cout << shapes[i] -> name << "(" << dims << ") : " << area << "\n";
     }
 }
 
@@ -269,7 +269,7 @@ int main(int argc, char* argv[]) {
 
     drawAll(shapes, total);
     printAll(shapes, total);
-    cout << "Total: " << totalArea(shapes, total) << '\n';
+    cout << "Total : " << totalArea(shapes, total) << '\n';
 
     return 0;
 }
