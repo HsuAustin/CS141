@@ -51,9 +51,9 @@ struct Circle {
     VTableType VPointer;
     const char* name;
     int radius;
-}
+};
 
-static const char* Circle_area(Circle* _this) {return PI * _this -> radius * _this -> radius;}
+static double Circle_area(Circle* _this) {return PI * _this -> radius * _this -> radius;}
 
 static void Circle_draw(Circle* _this) {
     cout << "       ***   " << '\n';
@@ -79,7 +79,7 @@ static VirtualTableEntry Circle_VTable[] = {
 };
 
 static Circle* Circle_Circle(Circle* _this, const char* _name, int r) {
-    Shape_Shape((Shape*)_this, name);
+    Shape_Shape((Shape*)_this, _name);
     _this -> VPointer = Circle_VTable;
     _this -> radius = r;
     return _this;
@@ -119,7 +119,7 @@ static VirtualTableEntry Square_VTable[] = {
 };
 
 static Square* Square_Square(Square* _this, const char* _name, int side) {
-    Shape_Shape((Shape*)_this, name);
+    Shape_Shape((Shape*)_this, _name);
     _this -> VPointer = Square_VTable;
     _this -> side = side;
     return _this;
