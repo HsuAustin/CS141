@@ -243,29 +243,29 @@ int main(int argc, char* argv[]) {
     Shape** shapes = (Shape**)malloc(total * sizeof(Shape*));
     int k = 0;
 
-    Rectangle* r2 = (Rectangle*)malloc(sizeof(Rectangle));
-    shapes[k++] = (Shape*)Rectangle_Rectangle(r2, "SecondRectangle", arg3, arg4);
-
-    Rectangle* r1 = (Rectangle*)malloc(sizeof(Rectangle));
-    shapes[k++] = (Shape*)Rectangle_Rectangle(r1, "FirstRectangle", arg1, arg2);
-
-    Square* s2 = (Square*)malloc(sizeof(Square));
-    shapes[k++] = (Shape*)Square_Square(s2, "SecondSquare", arg3);
-
-    Square* s1 = (Square*)malloc(sizeof(Square));
-    shapes[k++] = (Shape*)Square_Square(s1, "FirstSquare", arg1);
-
-    Circle* c2 = (Circle*)malloc(sizeof(Circle));
-    shapes[k++] = (Shape*)Circle_Circle(c2, "SecondCircle", arg3);
-
-    Circle* c1 = (Circle*)malloc(sizeof(Circle));
-    shapes[k++] = (Shape*)Circle_Circle(c1, "FirstCircle", arg1);
+    Triangle* t1 = (Triangle*)malloc(sizeof(Triangle));
+    shapes[k++] = (Shape*)Triangle_Triangle(t1, "FirstTriangle", arg1, arg2);
 
     Triangle* t2 = (Triangle*)malloc(sizeof(Triangle));
     shapes[k++] = (Shape*)Triangle_Triangle(t2, "SecondTriangle", arg3, arg4);
 
-    Triangle* t1 = (Triangle*)malloc(sizeof(Triangle));
-    shapes[k++] = (Shape*)Triangle_Triangle(t1, "FirstTriangle", arg1, arg2);
+    Circle* c1 = (Circle*)malloc(sizeof(Circle));
+    shapes[k++] = (Shape*)Circle_Circle(c1, "FirstCircle", arg1);
+
+    Circle* c2 = (Circle*)malloc(sizeof(Circle));
+    shapes[k++] = (Shape*)Circle_Circle(c2, "SecondCircle", arg3);
+
+    Square* s1 = (Square*)malloc(sizeof(Square));
+    shapes[k++] = (Shape*)Square_Square(s1, "FirstSquare", arg1);
+
+    Square* s2 = (Square*)malloc(sizeof(Square));
+    shapes[k++] = (Shape*)Square_Square(s2, "SecondSquare", arg3);
+
+    Rectangle* r1 = (Rectangle*)malloc(sizeof(Rectangle));
+    shapes[k++] = (Shape*)Rectangle_Rectangle(r1, "FirstRectangle", arg1, arg2);
+
+    Rectangle* r2 = (Rectangle*)malloc(sizeof(Rectangle));
+    shapes[k++] = (Shape*)Rectangle_Rectangle(r2, "SecondRectangle", arg3, arg4);
 
     drawAll(shapes, total);
     printAll(shapes, total);
