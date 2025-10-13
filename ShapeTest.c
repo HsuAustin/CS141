@@ -36,3 +36,9 @@ static VirtualTableEntry Shape_VTable[] = {
     {.void_method = (void_method_type) Shape_draw},
     {.cstring_method = (cstring_method_type) Shape_dims}
 };
+
+static Shape* Shape_Shape(Shape* _this, const char* _name) {
+    _this -> VPointer = Shape_VTable;
+    _this -> name = _name;
+    return _this;
+}
