@@ -267,10 +267,9 @@ int main(int argc, char* argv[]) {
     Triangle* t1 = (Triangle*)malloc(sizeof(Triangle));
     shapes[k++] = (Shape*)Triangle_Triangle(t1, "FirstTriangle", arg1, arg2);
 
-    printAll(shapes, total);
     drawAll(shapes, total);
+    printAll(shapes, total);
     cout << "Total: " << totalArea(shapes, total) << '\n';
 
-    free(shapes);
     return 0;
 }
