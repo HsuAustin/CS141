@@ -222,3 +222,11 @@ static double totalArea(Shape** shapes, int count) {
     }
     return sum_area;
 }
+
+static void printAll(Shape** shapes, int count) {
+    for (int i = 0; i < count; ++i) {
+        const char* dims = shapes[i] -> VPointer[DIMS_INDEX].cstring_method(shapes[i]);
+        double area = shapes[i] -> VPointer[AREA_INDEX].double_method(shapes[i]);
+        cout << shapes[i] -> name << "(" << dims << "): " << area << "\n";
+    }
+}
