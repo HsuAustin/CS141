@@ -42,3 +42,39 @@ static Shape* Shape_Shape(Shape* _this, const char* _name) {
     _this -> name = _name;
     return _this;
 }
+
+struct Circle {
+    VTableType VPointer;
+    const char* name;
+    int radius;
+}
+
+static const char* Circle_area(Circle* _this) {return PI * _this -> radius * _this -> radius;}
+static void Circle_draw(Circle* _this) {
+    cout << "       ***   " << '\n';
+    cout << "   *         *" << '\n';
+    cout << " *             *" << '\n';
+    cout << "*               *" << '\n';
+    cout << "*               *" << '\n';
+    cout << " *             *" << '\n';
+    cout << "   *         *" << '\n';
+    cout << "       ***   " << '\n';
+}
+static const char* Circle_dims(Circle* _this) {
+    static string s;
+    s = to_string(_this -> radius);
+    return s.c_str();
+}
+
+static VirtualTableEntry Circle_VTable[] = {
+    {.double_method = (double_method_type) Circle_area},
+    {.void_method = (void_method_type) Circle_draw},
+    {.cstring_method = (cstring_method_type) Circle_dims}
+};
+
+static Circle* Circle_Circle(Circle* _this, const char* _name, int r) {
+    Shape_Shape(Shape* _this, name);
+    _this -> VPointer = Circle_VTable;
+    _this -> radius = r;
+    return _this;
+}
