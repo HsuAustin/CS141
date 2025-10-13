@@ -73,8 +73,44 @@ static VirtualTableEntry Circle_VTable[] = {
 };
 
 static Circle* Circle_Circle(Circle* _this, const char* _name, int r) {
-    Shape_Shape(Shape* _this, name);
+    Shape_Shape((Shape*)_this, name);
     _this -> VPointer = Circle_VTable;
     _this -> radius = r;
+    return _this;
+}
+
+struct Square {
+    VTableType VPointer;
+    const char* name;
+    int side;
+};
+
+static double Square_area(Square* _this) {return _this -> side * _this -> side;}
+static void Square_draw(Square* _this) {
+    cout << "*****************" << '\n';
+    cout << "*               *" << '\n';
+    cout << "*               *" << '\n';
+    cout << "*               *" << '\n';
+    cout << "*               *" << '\n';
+    cout << "*               *" << '\n';
+    cout << "*               *" << '\n';
+    cout << "*****************" << '\n';
+}
+static const char* Square_dims(Square* _this) {
+    static string s;
+    s = to_string(_this -> side);
+    return s.c_str();
+}
+
+static VirtualTableEntry Square_VTable[] = {
+    {.double_method = (double_method_type) Square_area},
+    {.void_method = (void_method_type) Square_draw},
+    {.cstring_method = (cstring_method_type) Square_dims}
+};
+
+static Square* Square_Square(Square* _this, const char* _name, int side) {
+    Shape_Shape((Shape*)_this, name);
+    _this -> VPointer = Square_VTable;
+    _this -> side = side;
     return _this;
 }
