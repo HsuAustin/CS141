@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -237,8 +238,8 @@ int main(int argc, char* argv[]) {
 
     const size_t total = sizeof(shapes) / sizeof(shapes[0]);
 
-    drawAll(shapes, total);
     printAll(shapes, total);
+    drawAll(shapes, total);
     cout << "Total : " << totalArea(shapes, total) << "\n";
 
     return 0;
