@@ -51,8 +51,8 @@ int main() {
     // friend operator * & friend operator +
     Vector<int> scaled = 3 * intVec;
     Vector<int> added = 10 + intVec;
-    cout << "scaled" << scaled << endl;
-    cout << "added" << added << endl;
+    cout << "scaled: " << scaled << endl;
+    cout << "added: " << added << endl;
 
     return 0;
 }
