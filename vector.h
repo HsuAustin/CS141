@@ -36,12 +36,12 @@ class Vector {
         size_t size() const {return sz;}
 
         T& operator [] (const int i) {
-            if (i < 0 || static_cast<size_t> i >= sz) {throw out_of_range("Vector index out of bounds");}
+            if (i < 0 || static_cast<size_t> (i) >= sz) {throw out_of_range("Vector index out of bounds");}
             return buf[i];
         }
 
         T operator [] (const int i) const {
-            if (i < 0 || static_cast<size_t> i >= sz) {throw out_of_range("Vector index out of bounds");}
+            if (i < 0 || static_cast<size_t> (i) >= sz) {throw out_of_range("Vector index out of bounds");}
             return buf[i];
         }
 
@@ -86,13 +86,13 @@ class Vector {
 
         inline friend Vector operator * (const int scale, const Vector &v) {
             Vector<T> out(v.sz);
-            for (size_t i = 0; i < v.sz; i++) {out.buf[i] = static_cast<T> scale * v.buf[i];}
+            for (size_t i = 0; i < v.sz; i++) {out.buf[i] = static_cast<T> (scale) * v.buf[i];}
             return out;
         }
 
         inline friend Vector operator + (const int adder, const Vector &v) {
             Vector<T> out(v.sz);
-            for (size_t i = 0; i < v.sz; i++) {out.buf[i] = v.buf[i] + static_cast<T> adder;}
+            for (size_t i = 0; i < v.sz; i++) {out.buf[i] = v.buf[i] + static_cast<T> (adder);}
             return out;
         }
 
