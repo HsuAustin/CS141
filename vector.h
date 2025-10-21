@@ -4,7 +4,7 @@
 using namespace std;
 
 template <typename T>
-class vector {
+class Vector {
     private:
         size_t sz;
         T* buf;
