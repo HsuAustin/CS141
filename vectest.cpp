@@ -14,9 +14,6 @@ int main() {
     cout << "doubleVec" << doubleVec << endl;
     cout << "dv" << dv << endl;
 
-    cout << "intVec size = " << intVec.size() << endl;
-    cout << "doubleVec size = " << doubleVec.size() << endl;
-
     // size()
     cout << "intVec size = " << intVec.size() << endl;
     cout << "doubleVec size = " << doubleVec.size() << endl;
