@@ -23,7 +23,7 @@ int main() {
     cout << "iv = " << iv << endl;
 
     // operator [] (const)
-    const Vector<int>& v = intVec;
+    const Vector<int> &v = intVec;
     int firstConst = v[0];
     cout << "firstConst = " << firstConst << endl;
 
@@ -41,14 +41,18 @@ int main() {
     intVec3 = intVec;
     cout << "intVec3 = " << intVec3 << endl;
 
-    // operator == & operator !=
+    // operator ==
     cout << (intVec == iv) << endl;
+
+    // operator !=
     cout << (intVec != iv) << endl;
 
-    // friend operator * & friend operator +
+    // friend operator *
     Vector<int> scaled = 3 * intVec;
-    Vector<int> added = 10 + intVec;
     cout << "scaled = " << scaled << endl;
+
+    // friend operator +
+    Vector<int> added = 10 + intVec;
     cout << "added = " << added << endl;
 
     return 0;
