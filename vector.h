@@ -36,12 +36,12 @@ class Vector {
         size_t size() const {return sz;}
 
         T& operator [] (const int i) {
-            if (i < 0 || static_cast<size_t> (i) >= sz) {throw out_of_range("Vector index out of bounds");}
+            if (i < 0 || static_cast<size_t> (i) >= sz) {throw "Vector index out of bounds";}
             return buf[i];
         }
 
         T operator [] (const int i) const {
-            if (i < 0 || static_cast<size_t> (i) >= sz) {throw out_of_range("Vector index out of bounds");}
+            if (i < 0 || static_cast<size_t> (i) >= sz) {throw "Vector index out of bounds";}
             return buf[i];
         }
 
