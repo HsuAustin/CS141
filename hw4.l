@@ -124,7 +124,7 @@
             (MY-REPLACE ALIST (cdr L))))))
 
 (PRINT (MY-LENGTH NIL))
-(PRINT (MY-LENGTH '(B (A B C)))
+(PRINT (MY-LENGTH '(B (A B C))))
 (PRINT (MY-LENGTH '(A (((B))) C)))
 (PRINT (MY-LENGTH '(A B C)))
 
