@@ -50,7 +50,7 @@
         ((eq fn 'cdr) (cdr (my-eval (car args) alist)))
         ((eq fn 'cons) (cons (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
         ((eq fn 'quote) (car args))
-        ((eq fn 'setq) (my-eval-setq (car args) (car (cdr args)) alist))
+        ((eq fn 'setq) (my-eval-setq (car args) (my-eval (car (cdr args)) alist)))
         ((eq fn 'cond) (my-eval-cond args alist))
         ((eq fn 'defun) (my-eval-defun args alist))
         ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
@@ -82,9 +82,8 @@
                         ((my-assoc fn global-alist) (my-apply (cdr (my-assoc fn global-alist)) args alist))
                         (t nil)))))
 
-(defun my-eval-setq (var val alist)
-    (setq global-alist (cons (cons var (my-eval val alist)) global-alist))
-    (cdr (car global-alist)))
+(defun my-eval-setq (var val)
+    (setq global-alist (cons (cons var val) global-alist)) val)
 
 (defun my-eval-cond (clauses alist)
     (cond
@@ -101,7 +100,7 @@
 
 (defun my-top ()
     (prog ()
-    top
-        (print (my-eval (read) global-alist))
-        (terpri)
-        (go top)))
+        top
+            (print (my-eval (read) global-alist))
+            (terpri)
+            (go top)))
