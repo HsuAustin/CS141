@@ -28,9 +28,14 @@
         ((null (cdr l)) (my-eval (car l) alist))
         (t (my-eval (car l) alist) (my-eval-list (cdr l) alist))))
 
-
 (defun my-apply-lambda (fn args alist)
     (cond
         ((eq (car fn) 'lambda)
         (my-eval-list (cdr (cdr fn)) (my-bind-formals (car (cdr fn)) args alist)))
         (t (my-eval-list (cdr fn) (my-bind-formals (car fn) args alist)))))
+
+(defun my-bind-formals (formals actuals alist)
+    (cond
+        ((null formals) alist)
+        (t (my-bind-formals (cdr formals) (cdr actuals) 
+            (cons (cons (car formals) (my-eval (car actuals) alist)) alist)))))
