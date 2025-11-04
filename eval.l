@@ -9,4 +9,12 @@
         ((atom e) (my-eval-atom e alist))
         (t (my-apply (car e) (cdr e) alist))))
 
+(defun my-eval-atom (e alist)
+    (cond
+        ((eq e 't) t)
+        ((null e) nil)
+        ((my-assoc e alist) (cdr (my-assoc e alist)))
+        ((my-assoc e global-alist) (cdr (my-assoc e global-alist)))
+        (t e)))
+
 
