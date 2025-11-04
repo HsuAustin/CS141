@@ -1,3 +1,5 @@
+(defvar global-alist nil)
+
 (defun my-assoc (v alist)
     (cond
         ((null alist) nil)
@@ -42,8 +44,7 @@
 
 (defun my-apply-atom (fn args alist)
     (cond
-        ((eq fn 'eq)
-        (eq (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
+        ((eq fn 'eq) (eq (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
         ((eq fn 'car) (car (my-eval (car args) alist)))
         ((eq fn 'cdr) (cdr (my-eval (car args) alist)))
         ((eq fn 'cons) (cons (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
@@ -57,28 +58,32 @@
         ((eq fn 'null) (null (my-eval (car args) alist)))
         ((eq fn 'listp) (listp (my-eval (car args) alist)))
         ((eq fn 'equal) (equal (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
-        ((eq fn '+)
-        (cond
+        ((eq fn 'not) (cond ((my-eval (car args) alist) nil) (t t)))
+        ((eq fn 'and) (cond
+            ((null args) t)
+            ((null (my-eval (car args) alist)) nil)
+            (t (my-apply-atom 'and (cdr args) alist))))
+        ((eq fn '<) (< (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
+        ((eq fn '>) (> (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
+        ((eq fn '1+) (+ (my-eval (car args) alist) 1))
+        ((eq fn '1-) (- (my-eval (car args) alist) 1))
+        ((eq fn '/) (/ (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
+        ((eq fn '+) (cond
             ((null args) 0)
             (t (+ (my-eval (car args) alist) (my-apply-atom '+ (cdr args) alist)))))
-            ((eq fn '-)
-            (cond
-                ((null args) 0)
-                ((null (cdr args)) (- (my-eval (car args) alist)))
-                (t (- (my-eval (car args) alist) (my-apply-atom '+ (cdr args) alist)))))
-                ((eq fn 'mod)
-                (mod (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
-                ((eq fn 'floor)
-                (cond
-                    ((null (cdr args)) (floor (my-eval (car args) alist)))
-                    (t (floor (/ (my-eval (car args) alist) (my-eval (car (cdr args)) alist))))))
-                    ((eq fn 'apply)
-                    (my-apply (car args) (my-eval (car (cdr args)) alist) alist))
-                    (t
-                    (cond
-                        ((my-assoc fn alist) (my-apply (cdr (my-assoc fn alist)) args alist))
-                        ((my-assoc fn global-alist) (my-apply (cdr (my-assoc fn global-alist)) args alist))
-                        (t nil)))))
+        ((eq fn '-) (cond
+            ((null args) 0)
+            ((null (cdr args)) (- (my-eval (car args) alist)))
+            (t (- (my-eval (car args) alist) (my-apply-atom '+ (cdr args) alist)))))
+        ((eq fn 'mod) (mod (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
+        ((eq fn 'floor) (cond
+            ((null (cdr args)) (floor (my-eval (car args) alist)))
+            (t (floor (/ (my-eval (car args) alist) (my-eval (car (cdr args)) alist))))))
+        ((eq fn 'apply) (my-apply (car args) (my-eval (car (cdr args)) alist) alist))
+        (t (cond
+            ((my-assoc fn alist) (my-apply (cdr (my-assoc fn alist)) args alist))
+            ((my-assoc fn global-alist) (my-apply (cdr (my-assoc fn global-alist)) args alist))
+            (t nil)))))
 
 (defun my-eval-setq (var val)
     (setq global-alist (cons (cons var val) global-alist)) val)
@@ -95,8 +100,6 @@
 (defun my-eval-defun (body alist)
     (setq global-alist (cons body global-alist))
     (car body))
-
-(defvar global-alist nil)
 
 (defun my-top ()
     (prog ()
