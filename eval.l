@@ -98,3 +98,10 @@
     (car body))
 
 (defvar global-alist nil)
+
+(defun my-top ()
+    (prog ()
+    top
+        (print (my-eval (read) global-alist))
+        (terpri)
+        (go top)))
