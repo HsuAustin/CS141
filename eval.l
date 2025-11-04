@@ -1,5 +1,3 @@
-(defvar global-alist nil)
-
 (defun my-assoc (v alist)
     (cond
         ((null alist) nil)
@@ -97,6 +95,8 @@
 (defun my-eval-defun (body alist)
     (setq global-alist (cons body global-alist))
     (car body))
+
+(defvar global-alist nil)
 
 (defun my-top ()
     (prog ()
