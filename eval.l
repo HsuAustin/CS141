@@ -38,8 +38,9 @@
 (defun my-bind-formals (formals actuals alist)
   (cond
     ((null formals) alist)
-    (t (my-bind-formals (cdr formals) (cdr actuals)
-         (cons (cons (car formals) (my-eval (car actuals) alist)) alist)))))
+    (t
+     (cons (cons (car formals) (my-eval (car actuals) alist))
+           (my-bind-formals (cdr formals) (cdr actuals) alist)))))
 
 (defun my-apply-collect-apply-args (xs alist)
   (cond
