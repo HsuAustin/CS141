@@ -42,13 +42,6 @@
         (t (cons (cons (car formals) (my-eval (car actuals) alist))
             (my-bind-formals (cdr formals) (cdr actuals) alist)))))
 
-(defun my-apply-collect-apply-args (xs alist)
-    (cond
-        ((null xs) nil)
-        ((null (cdr xs)) (my-eval (car xs) alist))
-        (t (cons (my-eval (car xs) alist)
-            (my-apply-collect-apply-args (cdr xs) alist)))))
-
 (defun my-apply-atom (fn args alist)
     (cond
         ((eq fn 'eq)
@@ -68,7 +61,7 @@
         ((eq fn 'equal) (equal (my-eval (car args) alist) (my-eval (car (cdr args)) alist)))
         ((eq fn '+)
         (cond
-        ((null args) 0)
+            ((null args) 0)
             (t (+ (my-eval (car args) alist) (my-apply-atom '+ (cdr args) alist)))))
             ((eq fn '-)
             (cond
@@ -82,7 +75,7 @@
                     ((null (cdr args)) (floor (my-eval (car args) alist)))
                     (t (floor (/ (my-eval (car args) alist) (my-eval (car (cdr args)) alist))))))
                     ((eq fn 'apply)
-                    (my-apply (car args) (my-apply-collect-apply-args (cdr args) alist) alist))
+                    (my-apply (car args) (my-eval (car (cdr args)) alist) alist))
                     (t
                     (cond
                         ((my-assoc fn alist) (my-apply (cdr (my-assoc fn alist)) args alist))
