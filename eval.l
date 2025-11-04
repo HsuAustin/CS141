@@ -21,3 +21,16 @@
     (cond
         ((atom fn) (my-apply-atom fn args alist))
         (t (my-apply-lambda fn args alist))))
+
+(defun my-eval-list (l alist)
+    (cond
+        ((null l) nil)
+        ((null (cdr l)) (my-eval (car l) alist))
+        (t (my-eval (car l) alist) (my-eval-list (cdr l) alist))))
+
+
+(defun my-apply-lambda (fn args alist)
+    (cond
+        ((eq (car fn) 'lambda)
+        (my-eval-list (cdr (cdr fn)) (my-bind-formals (car (cdr fn)) args alist)))
+        (t (my-eval-list (cdr fn) (my-bind-formals (car fn) args alist)))))
