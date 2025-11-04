@@ -83,3 +83,12 @@
 (defun my-eval-setq (var val)
     (setq global-alist (cons (cons var (my-eval val global-alist)) global-alist))
     (cdr (car global-alist)))
+
+(defun my-eval-cond (clauses alist)
+    (cond
+        ((null clauses) nil)
+        ((my-eval (car (car clauses)) alist)
+        (cond
+            ((null (cdr (car clauses))) (my-eval (car (car clauses)) alist))
+            (t (my-eval-list (cdr (car clauses)) alist))))
+            (t (my-eval-cond (cdr clauses) alist))))
