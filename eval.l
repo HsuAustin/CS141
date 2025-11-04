@@ -17,4 +17,7 @@
         ((my-assoc e global-alist) (cdr (my-assoc e global-alist)))
         (t e)))
 
-
+(defun my-apply (fn args alist)
+    (cond
+        ((atom fn) (my-apply-atom fn args alist))
+        (t (my-apply-lambda fn args alist))))
