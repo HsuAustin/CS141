@@ -92,3 +92,7 @@
             ((null (cdr (car clauses))) (my-eval (car (car clauses)) alist))
             (t (my-eval-list (cdr (car clauses)) alist))))
             (t (my-eval-cond (cdr clauses) alist))))
+
+(defun my-eval-defun (body alist)
+    (setq global-alist (cons body global-alist))
+    (car body))
