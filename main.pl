@@ -23,9 +23,8 @@ my_nth([_|T], N, R) :-
 
 my_remove(_X, [], []).
 my_remove(X, [H|T], R) :-
-    ( X == H ->
-        my_remove(X, T, R)
-    ;
+    (
+        X == H -> my_remove(X, T, R);
         R = [H|R1],
         my_remove(X, T, R1)
     ).
@@ -33,9 +32,8 @@ my_remove(X, [H|T], R) :-
 my_subst(_X, _Y, [], []).
 my_subst(X, Y, [H|T], [Y|R]) :- H == X, !, my_subst(X, Y, T, R).
 my_subst(X, Y, [H|T], [H1|R]) :-
-    ( nonvar(H), H = [_|_] ->
-        my_subst(X, Y, H, H1)
-    ;
+    (
+        nonvar(H), H = [_|_] -> my_subst(X, Y, H, H1);
         H1 = H
     ),
     my_subst(X, Y, T, R).
@@ -63,7 +61,7 @@ my_add_carry([A|TA], [B|TB], C, [S|R]) :-
 
 add_digits(A, B, C, S, Cout) :-
     Sum is A + B + C,
-    S   is Sum mod 10,
+    S is Sum mod 10,
     Cout is Sum // 10.
 
 my_merge([], L, L).
