@@ -56,6 +56,7 @@ simplify_plus(A, B, S) :-
         N is A + B, S = N;
         A = 0 -> S = B;
         B = 0 -> S = A;
+        B = -C -> simplify_minus(A, C, S);
         S = A + B
     ).
 
