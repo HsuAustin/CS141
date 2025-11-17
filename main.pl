@@ -51,14 +51,10 @@ build_mul([X], X).
 build_mul([X|Xs], X*Rest) :-
     build_mul(Xs, Rest).
 
-simplify_plus(A, B, S) :-
-    (integer(A), integer(B) ->
-        N is A + B, S = N;
-        A = 0 -> S = B;
-        B = 0 -> S = A;
-        B = -C -> simplify_minus(A, C, S);
-        S = A + B
-    ).
+select_elem(X, [X|Xs], Xs).
+
+select_elem(X, [Y|Ys], [Y|Zs]) :-
+    select_elem(X, Ys, Zs).
 
 simplify_minus(A, B, S) :-
     (integer(A), integer(B) ->
@@ -68,6 +64,15 @@ simplify_minus(A, B, S) :-
         A == B -> S = 0, !;
         B = -C -> S = A + C, !;
         S = A - B
+    ).
+
+simplify_plus(A, B, S) :-
+    (integer(A), integer(B) ->
+        N is A + B, S = N;
+        A = 0 -> S = B;
+        B = 0 -> S = A;
+        B = -C -> simplify_minus(A, C, S);
+        S = A + B
     ).
 
 simplify_times(A, B, S) :-
@@ -161,11 +166,6 @@ simplify(A ^ B, S) :-
 
 simplify(E, E).
 
-deriv(E, D) :-
-    simplify(E, SE),
-    d(SE, D0),
-    simplify(D0, D).
-
 d(N, 0) :-
     integer(N), !.
 
@@ -226,13 +226,10 @@ d(A / B, (DA * B - A * DB) / (B ^ 2)) :-
     d(A, DA),
     d(B, DB).
 
-party_seating(L) :-
-    guests(Guests),
-    Guests = [First|Others],
-    perm(Others, Tail),
-    L = [First|Tail],
-    valid_seating(L),
-    !.
+deriv(E, D) :-
+    simplify(E, SE),
+    d(SE, D0),
+    simplify(D0, D).
 
 guests(Guests) :-
     setof(M, male(M), Ms),
@@ -240,25 +237,11 @@ guests(Guests) :-
     append(Ms, Fs, All),
     sort(All, Guests).
 
-valid_seating(L) :-
-    no_adjacent_females(L),
-    adjacent_language_ok(L).
-
-no_adjacent_females([First|Rest]) :-
-    no_adjacent_females_linear([First|Rest]),
-    last_elem([First|Rest], Last),
-    \+ (female(Last), female(First)).
-
 no_adjacent_females_linear([_]).
 
 no_adjacent_females_linear([A, B | Rest]) :-
     \+ (female(A), female(B)),
     no_adjacent_females_linear([B | Rest]).
-
-adjacent_language_ok([First|Rest]) :-
-    adjacent_language_linear([First|Rest]),
-    last_elem([First|Rest], Last),
-    common_language(Last, First).
 
 adjacent_language_linear([_]).
 
@@ -271,18 +254,35 @@ common_language(A, B) :-
     speaks(B, Lang),
     !.
 
+last_elem([X], X).
+
+last_elem([_ | Rest], Last) :-
+    last_elem(Rest, Last).
+
+no_adjacent_females([First|Rest]) :-
+    no_adjacent_females_linear([First|Rest]),
+    last_elem([First|Rest], Last),
+    \+ (female(Last), female(First)).
+
+adjacent_language_ok([First|Rest]) :-
+    adjacent_language_linear([First|Rest]),
+    last_elem([First|Rest], Last),
+    common_language(Last, First).
+
+valid_seating(L) :-
+    no_adjacent_females(L),
+    adjacent_language_ok(L).
+
 perm([], []).
 
 perm(L, [X|Xs]) :-
     select_elem(X, L, R),
     perm(R, Xs).
 
-select_elem(X, [X|Xs], Xs).
-
-select_elem(X, [Y|Ys], [Y|Zs]) :-
-    select_elem(X, Ys, Zs).
-
-last_elem([X], X).
-
-last_elem([_ | Rest], Last) :-
-    last_elem(Rest, Last).
+party_seating(L) :-
+    guests(Guests),
+    Guests = [First|Others],
+    perm(Others, Tail),
+    L = [First|Tail],
+    valid_seating(L),
+    !.
