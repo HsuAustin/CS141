@@ -19,6 +19,11 @@ public class MainClass {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        try {
+            printer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
@@ -60,7 +65,7 @@ class Printer {
         writer = new FileWriter("PRINTER" + id);
     }
 
-    synchronized void print(StringBuffer data) {
+    void print(StringBuffer data) {
         try {
             Thread.sleep(PRINT_DELAY);
             writer.write(data.toString());
@@ -137,9 +142,7 @@ class UserThread extends Thread {
                     currentFileName = null;
                 } else if (line.startsWith(".print")) {
                     String name = line.substring(6).trim();
-                    StringBuffer fileName = new StringBuffer(name);
-                    PrintJobThread job = new PrintJobThread(fileName, disk, printer, directory);
-                    job.start();
+                    printFile(new StringBuffer(name));
                 } else {
                     if (saving && currentFileName != null) {
                         StringBuffer data = new StringBuffer(line);
@@ -156,31 +159,17 @@ class UserThread extends Thread {
             e.printStackTrace();
         }
     }
-}
 
-class PrintJobThread extends Thread {
-    private final StringBuffer fileName;
-    private final Disk disk;
-    private final Printer printer;
-    private final DirectoryManager directory;
-
-    PrintJobThread(StringBuffer fileName, Disk disk, Printer printer, DirectoryManager directory) {
-        this.fileName = new StringBuffer(fileName.toString());
-        this.disk = disk;
-        this.printer = printer;
-        this.directory = directory;
-    }
-
-    public void run() {
+    private void printFile(StringBuffer fileName) {
         FileInfo fi = directory.lookup(fileName);
         if (fi == null) {
             return;
         }
-        StringBuffer buffer = new StringBuffer();
+        StringBuffer data = new StringBuffer();
         for (int i = 0; i < fi.fileLength; i++) {
-            buffer.setLength(0);
-            disk.read(fi.startingSector + i, buffer);
-            printer.print(buffer);
+            data.setLength(0);
+            disk.read(fi.startingSector + i, data);
+            printer.print(data);
         }
     }
 }
