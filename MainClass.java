@@ -5,25 +5,19 @@ public class MainClass {
     public static void main(String[] args) {
         Disk disk = new Disk();
         Printer printer;
-        try {
-            printer = new Printer(0);
-        } catch (IOException e) {
+        try {printer = new Printer(0);} 
+        catch (IOException e) {
             e.printStackTrace();
             return;
         }
+
         DirectoryManager directory = new DirectoryManager();
         UserThread user0 = new UserThread(0, disk, printer, directory);
         user0.start();
-        try {
-            user0.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            printer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        try {user0.join();} 
+        catch (InterruptedException e) {e.printStackTrace();}
+        try {printer.close();} 
+        catch (IOException e) {e.printStackTrace();}
     }
 }
 
@@ -32,26 +26,18 @@ class Disk {
     static final int DISK_DELAY = 80;
     StringBuffer[] sectors = new StringBuffer[NUM_SECTORS];
 
-    Disk() {
-        for (int i = 0; i < NUM_SECTORS; i++) {
-            sectors[i] = new StringBuffer();
-        }
-    }
+    Disk() {for (int i = 0; i < NUM_SECTORS; i++) {sectors[i] = new StringBuffer();}}
 
     void write(int sector, StringBuffer data) {
-        try {
-            Thread.sleep(DISK_DELAY);
-        } catch (InterruptedException e) {
-        }
+        try {Thread.sleep(DISK_DELAY);} 
+        catch (InterruptedException e) {}
         sectors[sector].setLength(0);
         sectors[sector].append(data.toString());
     }
 
     void read(int sector, StringBuffer data) {
-        try {
-            Thread.sleep(DISK_DELAY);
-        } catch (InterruptedException e) {
-        }
+        try {Thread.sleep(DISK_DELAY);} 
+        catch (InterruptedException e) {}
         data.setLength(0);
         data.append(sectors[sector].toString());
     }
@@ -61,9 +47,7 @@ class Printer {
     static final int PRINT_DELAY = 275;
     private final FileWriter writer;
 
-    Printer(int id) throws IOException {
-        writer = new FileWriter("PRINTER" + id);
-    }
+    Printer(int id) throws IOException {writer = new FileWriter("PRINTER" + id);}
 
     void print(StringBuffer data) {
         try {
@@ -71,14 +55,10 @@ class Printer {
             writer.write(data.toString());
             writer.write("\n");
             writer.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {e.printStackTrace();}
     }
 
-    void close() throws IOException {
-        writer.close();
-    }
+    void close() throws IOException {writer.close();}
 }
 
 class FileInfo {
@@ -90,13 +70,9 @@ class FileInfo {
 class DirectoryManager {
     private Hashtable<String, FileInfo> T = new Hashtable<String, FileInfo>();
 
-    void enter(StringBuffer fileName, FileInfo file) {
-        T.put(fileName.toString(), file);
-    }
+    void enter(StringBuffer fileName, FileInfo file) {T.put(fileName.toString(), file);}
 
-    FileInfo lookup(StringBuffer fileName) {
-        return T.get(fileName.toString());
-    }
+    FileInfo lookup(StringBuffer fileName) {return T.get(fileName.toString());}
 }
 
 class UserThread extends Thread {
@@ -155,16 +131,12 @@ class UserThread extends Thread {
             }
             reader.close();
             inputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     private void printFile(StringBuffer fileName) {
         FileInfo fi = directory.lookup(fileName);
-        if (fi == null) {
-            return;
-        }
+        if (fi == null) {return;}
         StringBuffer data = new StringBuffer();
         for (int i = 0; i < fi.fileLength; i++) {
             data.setLength(0);
